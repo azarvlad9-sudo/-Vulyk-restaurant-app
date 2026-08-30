@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!-- Героїчний 3D банер -->
+<div class="glass-card p-5 my-5 text-center position-relative overflow-hidden">
+    <h1 class="display-3 fw-bold text-glow mb-3">СМАК, ЩО НАДИХАЄ</h1>
+    <p class="fs-5 text-muted mb-4">Преміальна кухня ресторану "Вулик" з миттєвою доставкою до вашого столу.</p>
+    <a href="{% url 'menu_list' %}" class="btn-3d text-decoration-none">Переглянути меню</a>
+</div>
+
+<!-- Популярні страви -->
+<div id="menu" class="my-5">
+    <h2 class="text-warning text-glow mb-4"><i class="fa-solid fa-fire me-2"></i> Популярні страви</h2>
+    <div class="row g-4">
+        {% for dish in popular_dishes %}
+            <div class="col-md-4">
+                <div class="glass-card h-100 p-3 d-flex flex-column justify-content-between">
+                    <div>
+                        <div class="dish-img-wrapper mb-3">
+                            {% if dish.image %}
+                                <img src="{{ dish.image.url }}" class="img-fluid w-100" style="height: 220px; object-fit: cover;" alt="{{ dish.name }}">
+                            {% else %}
+                                <div class="bg-secondary w-100 d-flex align-items-center justify-content-center" style="height: 220px;">
+                                    <i class="fa-solid fa-utensils fs-1 text-muted"></i>
+                                </div>
+                            {% endif %}
+                        </div>
+                        <h4 class="fw-bold">{{ dish.name }}</h4>
+                        <p class="text-muted small">{{ dish.description }}</p>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center mt-3 pt-3 border-top border-secondary">
+                        <span class="fs-4 fw-bold text-warning">{{ dish.price }} грн</span>
+                        <button class="btn-3d"><i class="fa-solid fa-plus"></i></button>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <p class="text-muted">Страви скоро з'являться в меню!</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

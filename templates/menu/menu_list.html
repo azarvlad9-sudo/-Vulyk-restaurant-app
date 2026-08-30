@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="text-center my-4">
+    <h1 class="fw-bold text-glow text-warning display-4">НАШЕ МЕНЮ</h1>
+    <p class="text-muted">Обирайте найсмачніші страви для будь-якого приводу</p>
+</div>
+
+<!-- Категорії (Фільтри) -->
+<div class="d-flex justify-content-center flex-wrap gap-2 my-4">
+    <a href="{% url 'menu_list' %}" class="btn {% if not selected_category %}btn-warning{% else %}btn-outline-warning{% endif %} rounded-pill px-4">
+        Усі страви
+    </a>
+    {% for cat in categories %}
+        <a href="{% url 'menu_list' %}?category={{ cat.slug }}"
+           class="btn {% if selected_category.slug == cat.slug %}btn-warning{% else %}btn-outline-warning{% endif %} rounded-pill px-4">
+            {{ cat.name }}
+        </a>
+    {% endfor %}
+</div>
+
+<!-- Сітка страв -->
+<div class="row g-4 my-3">
+    {% for dish in dishes %}
+        <div class="col-md-4">
+            <div class="glass-card h-100 p-3 d-flex flex-column justify-content-between">
+                <div>
+                    <div class="dish-img-wrapper mb-3">
+                        {% if dish.image %}
+                            <img src="{{ dish.image.url }}" class="img-fluid w-100" style="height: 220px; object-fit: cover;" alt="{{ dish.name }}">
+                        {% else %}
+                            <div class="bg-secondary w-100 d-flex align-items-center justify-content-center" style="height: 220px;">
+                                <i class="fa-solid fa-utensils fs-1 text-muted"></i>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <h4 class="fw-bold">
+                        <a href="{% url 'dish_detail' dish.slug %}" class="text-white text-decoration-none">{{ dish.name }}</a>
+                    </h4>
+                    <p class="text-muted small">{{ dish.description|truncatewords:12 }}</p>
+                </div>
+                <div class="d-flex justify-content-between align-items-center mt-3 pt-3 border-top border-secondary">
+                    <span class="fs-4 fw-bold text-warning">{{ dish.price }} грн</span>
+                    <button class="btn-3d"><i class="fa-solid fa-plus me-1"></i> В кошик</button>
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <div class="col-12 text-center my-5">
+            <p class="text-muted fs-4">У цій категорії поки немає страв.</p>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}
