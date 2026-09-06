@@ -5,8 +5,9 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('menu.urls')),
-    path('auth/', include('users.urls')), # Підключаємо авторизацію
+    path('', include(('menu.urls', 'menu'), namespace='menu')),
+    path('users/', include(('users.urls', 'users'), namespace='users')),
+    path('cart/', include(('cart.urls', 'cart'), namespace='cart')),
 ]
 
 if settings.DEBUG:
