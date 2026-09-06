@@ -1,59 +1,191 @@
-{% load static %}
 <!DOCTYPE html>
 <html lang="uk">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Ресторан Вулик{% endblock %}</title>
+    <title>{% block title %}Ресторан "Вулик"{% endblock %}</title>
+    
+    <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome Іконки -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <!-- Стильний неоновий шрифт -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --amber-primary: #ffb703;
+            --amber-glow: #fb8500;
+            --dark-bg: #060709;
+            --card-bg: rgba(15, 17, 23, 0.85);
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            color: #f8f9fa;
+            font-family: 'Montserrat', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+
+            /* НОВИЙ СТИЛЬНИЙ ФОН: Глибокий неоновий градієнт + Точкова сітка "Digital Gold" */
+            background-image:
+                radial-gradient(circle at 50% 15%, rgba(251, 133, 0, 0.22) 0%, transparent 60%),
+                radial-gradient(circle at 85% 75%, rgba(255, 183, 3, 0.12) 0%, transparent 50%),
+                radial-gradient(rgba(251, 133, 0, 0.4) 1.5px, transparent 1.5px);
+            background-size: 100% 100%, 100% 100%, 32px 32px;
+            background-attachment: fixed;
+        }
+
+        .main-content {
+            flex: 1;
+        }
+
+        /* 3D Неоновий заголовок */
+        .text-glow {
+            font-weight: 900;
+            background: linear-gradient(135deg, #ffffff 10%, #ffb703 50%, #fb8500 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 10px 30px rgba(251, 133, 0, 0.6);
+        }
+
+        /* Шапка сайту */
+        .navbar-dark {
+            background: rgba(6, 7, 9, 0.92) !important;
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(255, 152, 0, 0.3);
+        }
+
+        /* 3D Скляні картки */
+        .glass-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 152, 0, 0.25);
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
+        }
+
+        /* 3D Кнопка із неоновим сяйвом */
+        .btn-3d {
+            background: linear-gradient(135deg, #ffb703, #fb8500);
+            color: #000 !important;
+            font-weight: 900;
+            padding: 12px 28px;
+            border-radius: 50px;
+            border: none;
+            box-shadow: 0 6px 20px rgba(251, 133, 0, 0.5);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: inline-block;
+        }
+
+        .btn-3d:hover {
+            transform: scale(1.08) translateZ(30px);
+            box-shadow: 0 0 35px rgba(251, 133, 0, 0.95), 0 0 15px rgba(255, 255, 255, 0.9);
+        }
+
+        footer {
+            background: rgba(6, 7, 9, 0.95);
+            border-top: 1px solid rgba(255, 152, 0, 0.2);
+        }
+    </style>
+    {% block extra_css %}{% endblock %}
 </head>
 <body>
 
     <!-- Навігація -->
-    <nav class="navbar navbar-expand-lg sticky-top my-3">
-        <div class="container glass-card py-2 px-4">
-            <a class="navbar-brand text-warning fw-bold fs-3 text-glow" href="{% url 'home' %}">🐝 ВУЛИК</a>
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand fw-black fs-3 text-glow" href="{% url 'menu:home' %}">
+                <i class="fas fa-bee me-2 text-warning"></i>ВУЛИК
+            </a>
 
-            <div class="d-flex align-items-center gap-2 gap-md-3">
-                <a href="{% url 'home' %}" class="btn btn-outline-warning rounded-pill px-3">Головна</a>
-                <a href="{% url 'menu_list' %}" class="btn btn-outline-warning rounded-pill px-3">Меню</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-                {% if user.is_authenticated %}
-                    <span class="text-light fw-bold ms-2">👋 {{ user.username }}</span>
-                    {% if user.is_staff %}
-                        <a href="/admin/" class="btn btn-outline-warning rounded-pill px-3">Адмінка</a>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+                    <li class="nav-item">
+                        <a class="nav-link text-uppercase fw-bold" href="{% url 'menu:home' %}">Головна</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-uppercase fw-bold" href="{% url 'menu:menu_list' %}">Меню</a>
+                    </li>
+                </ul>
+
+                <div class="d-flex align-items-center gap-2">
+                    <a href="{% url 'cart:cart_detail' %}" class="btn-3d py-2 px-3 text-decoration-none fs-6">
+                        <i class="fas fa-shopping-cart me-1"></i> Кошик
+                    </a>
+
+                    {% if user.is_authenticated %}
+                        <span class="text-light ms-2 me-2 fw-bold">
+                            <i class="fas fa-user-circle me-1 text-warning"></i>{{ user.username }}
+                        </span>
+                        <a href="{% url 'users:logout' %}" class="btn btn-outline-light btn-sm rounded-pill px-3">Вийти</a>
+                    {% else %}
+                        <a href="{% url 'users:login' %}" class="btn btn-outline-warning btn-sm rounded-pill px-3">Увійти</a>
+                        <a href="{% url 'users:register' %}" class="btn-3d py-2 px-3 text-decoration-none fs-6">Реєстрація</a>
                     {% endif %}
-                    <a href="{% url 'logout' %}" class="btn btn-outline-danger rounded-pill px-3">Вихід</a>
-                {% else %}
-                    <a href="{% url 'login' %}" class="btn btn-outline-warning rounded-pill px-3">Вхід</a>
-                    <a href="{% url 'register' %}" class="btn btn-warning rounded-pill px-3 text-dark fw-bold">Реєстрація</a>
-                {% endif %}
-
-                <button class="btn-3d ms-2"><i class="fa-solid fa-cart-shopping me-1"></i>Кошик</button>
+                </div>
             </div>
         </div>
     </nav>
 
-    <!-- Відображення системних повідомлень (сповіщення про успішний вхід/реєстрацію) -->
-    {% if messages %}
-        <div class="container mt-3">
+    <!-- Повідомлення -->
+    <div class="container mt-3">
+        {% if messages %}
             {% for message in messages %}
-                <div class="alert alert-{{ message.tags }} alert-dismissible fade show bg-dark text-light border-warning" role="alert">
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
                     {{ message }}
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             {% endfor %}
-        </div>
-    {% endif %}
+        {% endif %}
+    </div>
 
     <!-- Основний контент -->
-    <main class="container my-5">
+    <main class="main-content">
         {% block content %}{% endblock %}
     </main>
 
+    <!-- Футер -->
+    <footer class="py-4 mt-5 text-center text-muted">
+        <div class="container">
+            <p class="mb-0">&copy; 2026 Ресторан української кухні "Вулик". Усі права захищено.</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="{% static 'js/main.js' %}"></script>
+
+    <!-- 3D Ефект руху за мишкою -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tiltElements = document.querySelectorAll('.tilt-card');
+
+            tiltElements.forEach(el => {
+                el.addEventListener('mousemove', (e) => {
+                    const rect = el.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+
+                    const rotateX = ((y - centerY) / centerY) * -14;
+                    const rotateY = ((x - centerX) / centerX) * 14;
+
+                    el.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.03, 1.03, 1.03)`;
+                });
+
+                el.addEventListener('mouseleave', () => {
+                    el.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+                });
+            });
+        });
+    </script>
+    {% block extra_js %}{% endblock %}
 </body>
 </html>
