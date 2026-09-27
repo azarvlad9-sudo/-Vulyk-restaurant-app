@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="glass-card p-4 p-md-5 my-4">
+    <div class="row align-items-center g-4">
+        <div class="col-md-6">
+            <div class="dish-img-wrapper">
+                {% if dish.image %}
+                    <img src="{{ dish.image.url }}" class="img-fluid rounded-4 w-100" alt="{{ dish.name }}">
+                {% else %}
+                    <div class="bg-secondary rounded-4 w-100 d-flex align-items-center justify-content-center" style="height: 350px;">
+                        <i class="fa-solid fa-utensils fs-1 text-muted"></i>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-md-6">
+            <span class="badge bg-warning text-dark mb-2 px-3 py-2 fs-6">{{ dish.category.name }}</span>
+            <h1 class="display-5 fw-bold text-glow mb-3">{{ dish.name }}</h1>
+            <p class="fs-5 text-muted mb-4">{{ dish.description }}</p>
+
+            {% if dish.ingredients %}
+                <div class="mb-4">
+                    <h5 class="text-warning" data-i18n="ingredients_title">Інгредієнти:</h5>
+                    <p class="text-light">{{ dish.ingredients }}</p>
+                </div>
+            {% endif %}
+
+            <div class="d-flex align-items-center gap-4 mt-4">
+                <span class="display-6 fw-bold text-warning">{{ dish.price }} грн</span>
+                <a href="{% url 'cart:cart_add' dish.id %}" class="btn-3d px-5 fs-5 text-decoration-none text-dark d-inline-flex align-items-center">
+                    <i class="fa-solid fa-cart-plus me-2"></i> <span data-i18n="to_cart">в кошик</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
