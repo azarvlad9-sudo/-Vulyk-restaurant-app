@@ -8,11 +8,11 @@
 
 <!-- Категорії (Фільтри) -->
 <div class="d-flex justify-content-center flex-wrap gap-2 my-4">
-    <a href="{% url 'menu_list' %}" class="btn {% if not selected_category %}btn-warning{% else %}btn-outline-warning{% endif %} rounded-pill px-4">
+    <a href="{% url 'menu:menu_list' %}" class="btn {% if not selected_category %}btn-warning{% else %}btn-outline-warning{% endif %} rounded-pill px-4">
         Усі страви
     </a>
     {% for cat in categories %}
-        <a href="{% url 'menu_list' %}?category={{ cat.slug }}"
+        <a href="{% url 'menu:menu_list' %}?category={{ cat.slug }}"
            class="btn {% if selected_category.slug == cat.slug %}btn-warning{% else %}btn-outline-warning{% endif %} rounded-pill px-4">
             {{ cat.name }}
         </a>
@@ -35,7 +35,7 @@
                         {% endif %}
                     </div>
                     <h4 class="fw-bold">
-                        <a href="{% url 'dish_detail' dish.slug %}" class="text-white text-decoration-none">{{ dish.name }}</a>
+                        <a href="#" class="text-white text-decoration-none">{{ dish.name }}</a>
                     </h4>
                     <p class="text-muted small">{{ dish.description|truncatewords:12 }}</p>
                 </div>

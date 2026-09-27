@@ -14,29 +14,29 @@
     <!-- Навігація -->
     <nav class="navbar navbar-expand-lg sticky-top my-3">
         <div class="container glass-card py-2 px-4">
-            <a class="navbar-brand text-warning fw-bold fs-3 text-glow" href="{% url 'home' %}">🐝 ВУЛИК</a>
+            <a class="navbar-brand text-warning fw-bold fs-3 text-glow" href="{% url 'menu:home' %}">🐝 ВУЛИК</a>
 
             <div class="d-flex align-items-center gap-2 gap-md-3">
-                <a href="{% url 'home' %}" class="btn btn-outline-warning rounded-pill px-3">Головна</a>
-                <a href="{% url 'menu_list' %}" class="btn btn-outline-warning rounded-pill px-3">Меню</a>
+                <a href="{% url 'menu:home' %}" class="btn btn-outline-warning rounded-pill px-3">Головна</a>
+                <a href="{% url 'menu:menu_list' %}" class="btn btn-outline-warning rounded-pill px-3">Меню</a>
 
                 {% if user.is_authenticated %}
                     <span class="text-light fw-bold ms-2">👋 {{ user.username }}</span>
                     {% if user.is_staff %}
                         <a href="/admin/" class="btn btn-outline-warning rounded-pill px-3">Адмінка</a>
                     {% endif %}
-                    <a href="{% url 'logout' %}" class="btn btn-outline-danger rounded-pill px-3">Вихід</a>
+                    <a href="{% url 'users:logout' %}" class="btn btn-outline-danger rounded-pill px-3">Вихід</a>
                 {% else %}
-                    <a href="{% url 'login' %}" class="btn btn-outline-warning rounded-pill px-3">Вхід</a>
-                    <a href="{% url 'register' %}" class="btn btn-warning rounded-pill px-3 text-dark fw-bold">Реєстрація</a>
+                    <a href="{% url 'users:login' %}" class="btn btn-outline-warning rounded-pill px-3">Вхід</a>
+                    <a href="{% url 'users:register' %}" class="btn btn-warning rounded-pill px-3 text-dark fw-bold">Реєстрація</a>
                 {% endif %}
 
-                <button class="btn-3d ms-2"><i class="fa-solid fa-cart-shopping me-1"></i>Кошик</button>
+                <a href="{% url 'cart:cart_detail' %}" class="btn btn-3d ms-2"><i class="fa-solid fa-cart-shopping me-1"></i>Кошик</a>
             </div>
         </div>
     </nav>
 
-    <!-- Відображення системних повідомлень (сповіщення про успішний вхід/реєстрацію) -->
+    <!-- Сповіщення -->
     {% if messages %}
         <div class="container mt-3">
             {% for message in messages %}
