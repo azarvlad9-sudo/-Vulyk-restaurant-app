@@ -1,3 +1,4 @@
 from django.shortcuts import render
 
-# Create your views here.
+def cart_detail(request):
+    return render(request, 'cart/detail.html')  # Або інша назва шаблону, якщо є
